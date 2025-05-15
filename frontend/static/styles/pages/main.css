@@ -1,0 +1,253 @@
+@font-face {
+    font-family: 'e-Ukraine Bold';
+    src: url('../fonts/e-Ukraine/e-Ukraine-Bold.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Light';
+    src: url('../fonts/e-Ukraine/e-Ukraine-Light.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Ultralight';
+    src: url('../fonts/e-Ukraine/e-Ukraine-UltraLight.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'NAMU';
+    src: url('../fonts/NAMU Old Style 1850/NAMU_TF_2022_v1804/OTF_PS/NAMU-1850.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    color: inherit;
+    font-family: 'e-Ukraine Ultralight', sans-serif;
+}
+html, body {
+    height: 100%;
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+}
+img {
+    user-select: none;
+    pointer-events: none;
+    -webkit-user-drag: none;
+}
+
+body {
+    min-height: 100vh;
+    background: #171420;
+    color: #D9C6C6;
+    overflow-x: hidden;
+    position: relative;
+    animation: fadeIn 1.5s ease-out;
+}
+
+h1, p, a, button {
+    color: #D9C6C6;
+}
+
+h1 {
+    font-family: "NAMU", serif;
+    font-weight: normal;
+    font-size: 3rem;
+    max-width: 800px;
+    margin: 3rem 0 2rem 1.3rem;
+    animation: slideInFromLeft 0.8s ease-out forwards;
+    animation-delay: 0.3s;
+    opacity: 0;
+}
+
+p {
+    font-weight: lighter;
+    font-size: 1.1rem;
+    max-width: 570px;
+    line-height: 1.4;
+    margin: 0 0 3rem 1.3rem;
+    animation: slideInFromLeft 0.8s ease-out forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    width: 100%;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    animation: slideInFromLeft 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.logo img {
+    margin-right: 10px;
+}
+
+div img[src="../img/cube.svg"] {
+    width: 11%;
+}
+div img[src="../img/UrbanFlow.svg"] {
+    width: 55%;
+}
+
+
+ul {
+    display: flex;
+    gap: 2rem;
+    margin: 0 1rem 0 0;
+}
+
+ul li a {
+    font-size: 1rem;
+    display: inline-block;
+    padding: 0.5rem 0.6rem;
+    transition: all 0.3s ease;
+}
+
+ul li a:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+    animation: navItemHover 0.3s forwards;
+}
+
+main {
+    padding: 3rem 4rem;
+    position: relative;
+    z-index: 1;
+}
+
+button {
+    font-family: "NAMU", serif;
+    background-color: #E3705E;
+    border: none;
+    padding: 0.5rem 1.3rem 0.7rem 1.3rem;
+    font-size: 1.6rem;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    color: #171420;
+    margin: 0 0 3rem 1.3rem;
+}
+
+button:hover {
+    background-color: #cc5d4b;
+    transform: scale(1.05);
+}
+
+main img[src="../img/map.png"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -2;
+    width: 45%;
+    opacity: 0.5;
+    mix-blend-mode: lighten;
+    mask-image: radial-gradient(circle, black 50%, transparent 100%);
+    animation: mapAppear 2s ease-out forwards;
+}
+
+main img[src="../img/ellipse.png"] {
+    position: absolute;
+    opacity: 0.3;
+    z-index: -100;
+}
+
+main img[src="../img/ellipse.png"]:nth-of-type(1) {
+    top: -200px;
+    right: -100px;
+    width: 700px;
+    animation: pulse 8s infinite ease-in-out;
+}
+
+main img[src="../img/ellipse.png"]:nth-of-type(2) {
+    top: 200px;
+    left: -100px;
+    width: 900px;
+    animation: pulse 12s infinite ease-in-out;
+}
+
+main img[src="../img/map.png"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: -2;
+    max-width: 50%;
+    opacity: 0.1;
+    mix-blend-mode: lighten;
+}
+
+ul li:last-child a {
+    background-color: #5D68CB;
+    padding: 0.6rem;
+    border-radius: 15px;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+ul {
+    gap: 2rem;
+    z-index: 1000;
+}
+
+.logo {
+    margin-right: auto;
+}
+
+ul li {
+    display: inline-block;
+}
+
+
+ul li:nth-child(1) { animation-delay: 0.2s; }
+ul li:nth-child(2) { animation-delay: 0.4s; }
+ul li:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.3; }
+    50% { opacity: 0.5; }
+    100% { opacity: 0.3; }
+}
+
+@keyframes mapAppear {
+    from { opacity: 0; }
+    to { opacity: 0.1; }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
