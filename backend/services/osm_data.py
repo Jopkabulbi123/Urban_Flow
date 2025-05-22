@@ -7,11 +7,6 @@ logger = logging.getLogger(__name__)
 
 
 def haversine(lon1, lat1, lon2, lat2):
-    """
-    Calculate the great circle distance between two points
-    on the earth (specified in decimal degrees)
-    """
-    # Convert decimal degrees to radians
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
 
     # Haversine formula
@@ -19,18 +14,15 @@ def haversine(lon1, lat1, lon2, lat2):
     dlat = lat2 - lat1
     a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
     c = 2 * asin(sqrt(a))
-    r = 6371  # Radius of earth in kilometers
+    r = 6371
     return c * r
 
 
 class OSMDataFetcher:
-    """Service for fetching OpenStreetMap data"""
-
     def __init__(self):
         self.overpass_url = "https://overpass-api.de/api/interpreter"
 
     def get_area_data(self, north, west, south, east):
-        """Fetch OSM data for given coordinates"""
         query = f"""
         [out:json];
         (
@@ -55,7 +47,7 @@ class OSMDataFetcher:
         try:
             response = requests.post(self.overpass_url, data=query)
 
-            if response.status_code == 429:  # Too Many Requests
+            if response.status_code == 429:
                 logger.warning("Rate limited by Overpass API, waiting 5 seconds")
                 time.sleep(5)
                 return self.get_area_data(north, west, south, east)
@@ -64,5 +56,4 @@ class OSMDataFetcher:
             return response.json()
         except Exception as e:
             logger.error(f"Error fetching OSM data: {e}")
-            # Return minimal empty data structure to avoid errors
             return {"elements": []}

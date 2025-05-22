@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanFlow – Аналіз міської території</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="{% static 'css/pages/city_changer.css' %}">
+</head>
+<body>
+<nav aria-label="Головна навігація">
+    <div class="logo">
+        <img src="{% static 'img/cube.svg' %}" alt="Логотип UrbanFlow - куб">
+        <img src="{% static 'img/UrbanFlow.svg' %}" alt="UrbanFlow">
+    </div>
+    <ul role="list">
+        <li><a href="#">Про нас</a></li>
+        <li><a href="#">Проєкти</a></li>
+        <li><a href="#">Увійти</a></li>
+    </ul>
+</nav>
+
+<h1>Знайдіть потрібну для вас територію на мапі і отримайте аналіз.</h1>
+<section>
+    <h2>Мапа</h2>
+    <div id="map-container"></div>
+
+    <div class="coordinates-display">
+        <div>
+            <label>Пн-Зх: </label>
+            <span id="nw-coords">Не вибрано</span>
+        </div>
+        <div>
+            <label>Пд-Сх: </label>
+            <span id="se-coords">Не вибрано</span>
+        </div>
+    </div>
+
+    <button id="analyze-btn">Аналізувати</button>
+</section>
+
+<section class="optimization-results">
+    <h2>Результати аналізу</h2>
+    <div id="analysis-results">
+    </div>
+</section>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="{% static 'script/map.js' %}"></script>
+</body>
+</html>

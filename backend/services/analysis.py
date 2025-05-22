@@ -1,5 +1,8 @@
 from math import radians, cos, sin, asin, sqrt
-from services.osm_data import OSMDataFetcher, haversine
+from .osm_data import OSMDataFetcher, haversine
+import logging
+
+logger = logging.getLogger(__name__)
 
 class AreaAnalyzer:
     def __init__(self):
@@ -16,7 +19,6 @@ class AreaAnalyzer:
         roads, road_count, road_types = self._extract_road_data(osm_data)
         green_spaces, water_features = self._extract_green_water_data(osm_data)
 
-        # Calculate pedestrian and public transport scores
         pedestrian_friendly = self._calculate_pedestrian_score(roads, road_types)
         public_transport = self._calculate_transport_score(osm_data)
 
@@ -34,7 +36,6 @@ class AreaAnalyzer:
         }
 
     def _calculate_area(self, north, west, south, east):
-        """Calculate the area of the bounding box in square kilometers"""
         try:
             avg_lat = (north + south) / 2
             width = haversine(west, avg_lat, east, avg_lat)
@@ -45,7 +46,6 @@ class AreaAnalyzer:
             return 1.0
 
     def _extract_road_data(self, osm_data):
-        """Extract road data from OSM response"""
         roads = []
         road_count = 0
         road_types = {
@@ -74,7 +74,6 @@ class AreaAnalyzer:
         return roads, road_count, road_types
 
     def _calculate_road_length(self, element, nodes):
-        """Calculate the length of a road segment"""
         length = 0
         if "nodes" in element and len(element["nodes"]) > 1:
             for i in range(len(element["nodes"]) - 1):
@@ -86,7 +85,6 @@ class AreaAnalyzer:
         return length
 
     def _categorize_road(self, road_types, highway_type, tags):
-        """Categorize roads by type"""
         if highway_type in ["motorway", "trunk", "primary"]:
             road_types["Головні"] += 1
         elif highway_type in ["secondary", "tertiary"]:
@@ -99,7 +97,6 @@ class AreaAnalyzer:
             road_types["Велосипедні"] += 1
 
     def _extract_green_water_data(self, osm_data):
-        """Extract data about green spaces and water features"""
         green_spaces, water_features = [], []
 
         for element in osm_data.get("elements", []):
@@ -123,24 +120,20 @@ class AreaAnalyzer:
         return green_spaces, water_features
 
     def _calculate_score(self, value, max_value, weight=1):
-        """Calculate a normalized score between 10 and 95"""
         return min(95, max(10, int(value * weight / max(max_value, 0.1))))
 
     def _calculate_ecology_score(self, green_spaces, water_features, area):
-        """Calculate ecology score based on green spaces and water features"""
         green_score = self._calculate_score(len(green_spaces), area, 10)
         water_score = self._calculate_score(len(water_features), area, 15)
         return int(0.7 * green_score + 0.3 * water_score)
 
     def _calculate_pedestrian_score(self, roads, road_types):
-        """Calculate pedestrian-friendliness score"""
         total_roads = sum(road_types.values())
         if total_roads == 0:
             return 50
         return self._calculate_score(road_types["Пішохідні"], total_roads, 300)
 
     def _calculate_transport_score(self, osm_data):
-        """Calculate public transport accessibility score"""
         transport_stops = sum(
             1 for e in osm_data.get("elements", [])
             if e["type"] == "node" and "tags" in e and (
@@ -152,14 +145,12 @@ class AreaAnalyzer:
         return self._calculate_score(transport_stops, 1, 5)
 
     def _calculate_congestion(self, road_types):
-        """Calculate congestion score based on road types"""
         total_roads = sum(road_types.values())
         if total_roads == 0:
             return 50
         return self._calculate_score(road_types["Головні"], total_roads, 150)
 
     def _estimate_hourly_congestion(self, road_types):
-        """Estimate hourly congestion patterns"""
         base_level = min(40, int((road_types["Головні"] * 5 + road_types["Другорядні"] * 3) /
                                  max(sum(road_types.values()), 1) * 100))
 
@@ -180,7 +171,6 @@ class AreaAnalyzer:
         return hourly_pattern
 
     def _find_longest_road(self, roads):
-        """Find the longest named road in the area"""
         if not roads:
             return {"name": "No data", "length": 0}
 
