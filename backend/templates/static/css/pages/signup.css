@@ -1,0 +1,158 @@
+@font-face {
+    font-family: 'e-Ukraine Bold';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-Bold.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Light';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-Light.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Ultralight';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-UltraLight.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'NAMU';
+    src: url('../../fonts/NAMU Old Style 1850/NAMU_TF_2022_v1804/OTF_PS/NAMU-1850.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'e-Ukraine Light', sans-serif;
+    background: #171420;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.background-ellipse {
+    position: absolute;
+    left: 900px;
+    top: 50%;
+    transform: translateY(-50%) scale(1.5);
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+}
+
+.background-ellipse img {
+    width: 400px;
+    height: 400px;
+    opacity: 0.2;
+    user-select: none;
+    pointer-events: none;
+}
+
+.signup-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 400px;
+}
+
+.signup-card {
+    background: #5D68CC;
+    border-radius: 20px;
+    padding: 30px 30px 40px 30px;
+}
+
+h1 {
+    color: #FFFFFF;
+    font-size: 30px;
+    font-weight: 600;
+    text-align: left;
+    margin: 0 0 30px 5px;
+}
+
+.signup-form {
+    margin-bottom: 25px;
+}
+
+.name-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.name-row .input-group {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    font-family: 'e-Ukraine Light', sans-serif;
+    width: 100%;
+    padding: 12px 20px;
+    border: 3px solid #FFFFFF;
+    border-radius: 20px;
+    background: transparent;
+    color: #FFFFFF;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+    color: #FFFFFF;
+}
+
+.signup-btn {
+    font-family: "e-Ukraine Ultralight", sans-serif;
+    width: 100%;
+    padding: 15px;
+    background: #E66F5D;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin-bottom: 25px;
+}
+
+.signup-btn:hover {
+    transform: scale(1.05);
+}
+
+.login-link {
+    text-align: center;
+}
+
+.login-link span {
+    color: #FFFFFF;
+    font-size: 14px;
+}
+
+.login-link a {
+    color: #E66F5D;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}

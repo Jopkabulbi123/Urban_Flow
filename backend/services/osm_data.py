@@ -9,7 +9,6 @@ logger = logging.getLogger(__name__)
 def haversine(lon1, lat1, lon2, lat2):
     lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
 
-    # Haversine formula
     dlon = lon2 - lon1
     dlat = lat2 - lat1
     a = sin(dlat / 2) ** 2 + cos(lat1) * cos(lat2) * sin(dlon / 2) ** 2
@@ -45,7 +44,7 @@ class OSMDataFetcher:
         """
 
         try:
-            response = requests.post(self.overpass_url, data=query)
+            response = requests.post(self.overpass_url, data=query, timeout=30)
 
             if response.status_code == 429:
                 logger.warning("Rate limited by Overpass API, waiting 5 seconds")

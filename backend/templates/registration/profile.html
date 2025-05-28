@@ -1,0 +1,13 @@
+{% load static %}
+
+{% block content %}
+<div class="profile-container">
+    <h2>Welcome, {{ user.username }}!</h2>
+    <p>Email: {{ user.email }}</p>
+    <p>Member since: {{ join_date }}</p>
+    
+    <div class="profile-actions">
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+{% endblock %}

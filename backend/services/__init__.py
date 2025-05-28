@@ -1,4 +1,4 @@
 from .analysis import AreaAnalyzer
-from .osm_data import OSMDataFetcher
+from .osm_data import OSMDataFetcher, haversine
 
-__all__ = ['AreaAnalyzer', 'OSMDataFetcher']
+__all__ = ['AreaAnalyzer', 'OSMDataFetcher', 'haversine']
