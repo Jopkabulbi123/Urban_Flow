@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanFlow – Мій акаунт</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="{% static 'css/pages/profile.css' %}">
+</head>
+<body>
+<nav>
+    <div class="logo">
+        <img src="{% static 'img/cube.svg' %}" alt="Логотип UrbanFlow - куб">
+        <img src="{% static 'img/UrbanFlow.svg' %}" alt="UrbanFlow">
+    </div>
+    <ul role="list">
+        <li><a href="#">Про нас</a></li>
+        <li><a href="{% url 'myprojects' %}">Проєкти</a></li>
+    </ul>
+</nav>
+
+<div class="ellipse ellipse-1"></div>
+<div class="ellipse ellipse-2"></div>
+
+<main>
+    <div class="account-container">
+        <div class="account-card">
+            <h1>Мій акаунт</h1>
+            {% block content %}
+            <div class="profile-info">
+                <h2>Привіт, {{ user.username }}!</h2>
+                <p>Email: {{ user.email }}</p>
+                <p>Приєднався: {{ join_date }}</p>
+
+                <div class="logout-container">
+                    <a href="{% url 'logout' %}" class="logout-btn">Вийти</a>
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+</main>
+</body>
+</html>

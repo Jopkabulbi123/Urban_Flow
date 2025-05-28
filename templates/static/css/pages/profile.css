@@ -1,0 +1,288 @@
+@font-face {
+    font-family: 'e-Ukraine Bold';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-Bold.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Light';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-Light.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Ultralight';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-UltraLight.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'NAMU';
+    src: url('../../fonts/NAMU Old Style 1850/NAMU_TF_2022_v1804/OTF_PS/NAMU-1850.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    color: inherit;
+    font-family: 'e-Ukraine Ultralight', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+body {
+    min-height: 100vh;
+    background: #171420;
+    color: #D9C6C6;
+    position: relative;
+    animation: fadeIn 1.5s ease-out;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem;
+    width: 100%;
+    z-index: 1;
+    background: transparent;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    animation: slideInFromLeft 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.logo img {
+    margin-right: 6px;
+}
+
+.logo img[src$="cube.svg"] {
+    width: 28px;
+}
+
+.logo img[src$="UrbanFlow.svg"] {
+    width: 140px;
+}
+
+ul {
+    display: flex;
+    gap: 1.5rem;
+    margin: 0 1rem 0 0;
+}
+
+ul li a {
+    font-size: 0.9rem;
+    display: inline-block;
+    padding: 0.4rem 0.5rem;
+    transition: all 0.3s ease;
+    color: #D9C6C6;
+}
+
+ul li a:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+ul li:last-child a {
+    background-color: #5D68CB;
+    padding: 0.5rem;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+main {
+    position: relative;
+    overflow: hidden;
+    min-height: calc(100vh - 80px);
+    padding: 2rem;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.account-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 800px;
+}
+
+.account-card {
+    background: #5D68CC;
+    border-radius: 20px;
+    padding: 30px;
+    animation: slideInFromLeft 0.8s ease-out forwards;
+    animation-delay: 0.3s;
+    opacity: 0;
+}
+
+h1 {
+    font-family: "NAMU", serif;
+    font-weight: normal;
+    font-size: 3rem;
+    color: #FFFFFF;
+    margin: 0 0 30px 0;
+}
+
+.profile-info {
+    background: #E66F5D;
+    border-radius: 20px;
+    padding: 30px;
+    color: #FFFFFF;
+}
+
+.profile-info h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-family: 'e-Ukraine Light', sans-serif;
+}
+
+.profile-info p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-family: 'e-Ukraine Light', sans-serif;
+    color: #FFFFFF;
+}
+
+.logout-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #5D68CC;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    font-family: 'e-Ukraine Ultralight', sans-serif;
+    margin-top: 20px;
+}
+
+.logout-btn:hover {
+    transform: scale(1.05);
+}
+
+.ellipse {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: -2;
+    opacity: 0.2;
+    animation: pulse 8s infinite ease-in-out;
+    pointer-events: none;
+}
+
+.ellipse-1 {
+    width: 700px;
+    height: 700px;
+    top: -250px;
+    left: -100px;
+    background: rgba(93, 104, 203, 0.2);
+}
+
+.ellipse-2 {
+    width: 900px;
+    height: 900px;
+    bottom: -300px;
+    right: -200px;
+    background: rgba(230, 126, 103, 0.2);
+    animation-delay: 0s;
+    animation: fadeInEllipse 1s ease-out forwards, pulse 8s infinite ease-in-out 1s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInEllipse {
+    from { opacity: 0; }
+    to { opacity: 0.2; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.2; }
+    50% { transform: scale(1.05); opacity: 0.4; }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .account-container {
+        margin-top: 40px;
+        padding: 0 1rem;
+    }
+
+    .ellipse-1,
+    .ellipse-2 {
+        width: 400px;
+        height: 400px;
+    }
+}
+
+/* ... (попередні стилі залишаються незмінними до .profile-info) ... */
+
+.profile-info {
+    background: #E66F5D;
+    border-radius: 20px;
+    padding: 30px;
+    color: #FFFFFF;
+    position: relative; /* Додано для позиціонування кнопки */
+}
+
+/* ... (інші стилі залишаються незмінними до .logout-btn) ... */
+
+.logout-container {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.logout-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #5D68CC;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    text-decoration: none;
+    font-family: 'e-Ukraine Ultralight', sans-serif;
+}
+
+.logout-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ... (решта стилів залишаються незмінними) ... */

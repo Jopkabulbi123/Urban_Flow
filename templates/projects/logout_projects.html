@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мої проекти - UrbanFlow</title>
+    <link rel="stylesheet" href="{% static 'css/pages/myprojects.css' %}">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <img src="{% static 'img/cube.svg' %}" alt="Логотип">
+            <img src="{% static 'img/UrbanFlow.svg' %}" alt="UrbanFlow">
+        </div>
+        <ul>
+            <li><a href="#">Головна</a></li>
+            <li><a href="#">Проєкти</a></li>
+            <li><a href="#">Аналіз</a></li>
+            <li><a href="#">Профіль</a></li>
+        </ul>
+    </nav>
+
+    <main class="projects-container">
+        <h1>Мої проєкти</h1>
+
+        <div class="empty-state">
+            <p>Тут будуть зберігатися ваші створені або оптимізовані плани робіт. Поки що ви ще не додали жодного проєкту, але як тільки ви почнете працювати з інструментом, вони з'являться тут.</p>
+        </div>
+
+        <section class="getting-started">
+            <h2>Як почати?</h2>
+            <ol class="steps-list">
+                <li><span>Зареєструйтеся</span> – створіть обліковий запис, щоб зберігати та керувати своїми проєктами.</li>
+                <li><span>Створіть новий проєкт</span> – оберіть параметри та налаштуйте його під свої потреби.</li>
+                <li><span>Використовуйте вбудовані інструменти</span> для вдосконалення планування.</li>
+                <li><span>Зберігайте результати</span> – усі ваші роботи автоматично з'являться на цій сторінці.</li>
+            </ol>
+        </section>
+
+        <div class="auth-cta">
+            <p>Ще не зареєстровані? <a href="#" class="auth-link">Увійти або створити акаунт</a> – і почніть працювати вже сьогодні!</p>
+        </div>
+    </main>
+</body>
+</html>
