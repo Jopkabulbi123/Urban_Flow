@@ -26,6 +26,7 @@ class AnalyzedArea(models.Model):
     south = models.FloatField()
     east = models.FloatField()
     west = models.FloatField()
+    related_name = 'analyzedarea_set'
     area = models.FloatField(help_text="Area in square kilometers")
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -41,6 +42,14 @@ class AnalyzedArea(models.Model):
     class Meta:
         verbose_name = "Analyzed Area"
         verbose_name_plural = "Analyzed Areas"
+
+    def save(self, *args, **kwargs):
+        from backend.services.analysis import haversine
+        avg_latitude = (self.north + self.south) / 2
+        width_km = haversine(self.west, avg_latitude, self.east, avg_latitude)
+        height_km = haversine(self.west, self.north, self.west, self.south)
+        self.area = round(width_km * height_km, 2)
+        super().save(*args, **kwargs)
 
 
 class Road(models.Model):

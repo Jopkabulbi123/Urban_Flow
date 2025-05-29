@@ -2,14 +2,39 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from django.contrib.auth.decorators import login_required
 import json
-
+from .models import AnalyzedArea, Road, RoadTypeStats, HourlyCongestion, GreenSpace, WaterFeature
 from .forms import CustomUserCreationForm
 from backend.services.analysis import AreaAnalyzer
+from django.shortcuts import get_object_or_404
+
+
+
+@login_required
+def my_projects(request):
+    projects = request.user.analyzed_areas.all()
+    return render(request, 'projects/myprojects.html', {
+        'projects': projects
+    })
+
+
+@login_required
+def project_detail(request, project_id):
+    project = get_object_or_404(AnalyzedArea, id=project_id, user=request.user)
+    hourly_congestion = project.hourly_congestion.all().order_by('hour')
+
+    return render(request, 'projects/project_detail.html', {
+        'project': project,
+        'hourly_congestion': hourly_congestion,
+        'roads': project.roads.all(),
+        'green_spaces': project.green_spaces.all(),
+        'water_features': project.water_features.all(),
+        'road_type_stats': project.road_type_stats.all()
+    })
 
 
 @csrf_exempt
@@ -91,8 +116,116 @@ def profile_view(request):
 
 
 def home_view(request):
+    if request.user.is_authenticated:
+        return redirect('logged_home')
     return render(request, 'index.html')
 
+@login_required
+def logged_home_view(request):
+    projects_count = request.user.analyzedarea_set.count()
+    return render(request, 'index_logged.html', {
+        'projects_count': projects_count
+    })
 
 def city_changer_view(request):
     return render(request, 'city_changer.html')
+
+@login_required
+def my_projects(request):
+    projects = request.user.analyzedarea_set.all()
+    return render(request, 'projects/myprojects.html', {
+        'has_projects': projects.exists(),
+        'projects': projects
+    })
+
+def logout_project(request):
+    return render(request, 'projects/logout_projects.html')
+
+
+@login_required
+@require_http_methods(["POST"])
+def save_project(request):
+    try:
+        data = json.loads(request.body)
+
+        analyzer = AreaAnalyzer()
+        nw_lat, nw_lng = map(float, data['nw_coords'].split(','))
+        se_lat, se_lng = map(float, data['se_coords'].split(','))
+
+        analysis_results = analyzer.perform_analysis(nw_lat, nw_lng, se_lat, se_lng)
+
+        project = AnalyzedArea.objects.create(
+            user=request.user,
+            north=analysis_results['bounds'][0][0],
+            south=analysis_results['bounds'][1][0],
+            east=analysis_results['bounds'][1][1],
+            west=analysis_results['bounds'][0][1],
+            area=analysis_results['area'],
+            road_count=analysis_results['road_count'],
+            congestion=analysis_results['congestion'],
+            ecology=analysis_results['ecology'],
+            pedestrian_friendly=analysis_results['pedestrian_friendly'],
+            public_transport=analysis_results['public_transport']
+        )
+
+        for road_type, count in analysis_results['road_types'].items():
+            RoadTypeStats.objects.create(
+                area=project,
+                road_type=road_type,
+                count=count
+            )
+
+        for hour, level in enumerate(analysis_results['hourly_congestion']):
+            HourlyCongestion.objects.create(
+                area=project,
+                hour=hour,
+                congestion_level=level
+            )
+
+        for road in analysis_results['roads_data']:
+            Road.objects.create(
+                area=project,
+                osm_id=road['id'],
+                name=road['name'],
+                road_type=road['type'],
+                length=road['length']
+            )
+
+        for space in analysis_results['green_spaces_data']:
+            GreenSpace.objects.create(
+                area=project,
+                osm_id=space['id'],
+                name=space['name'],
+                space_type=space['type']
+            )
+
+        for water in analysis_results['water_features_data']:
+            WaterFeature.objects.create(
+                area=project,
+                osm_id=water['id'],
+                name=water['name'],
+                feature_type=water['type']
+            )
+
+        return JsonResponse({
+            'status': 'success',
+            'project_id': project.id
+        })
+
+    except Exception as e:
+        return JsonResponse({
+            'status': 'error',
+            'message': str(e)
+        }, status=400)
+
+@login_required
+@require_http_methods(["DELETE"])
+def delete_project(request, project_id):
+    try:
+        project = AnalyzedArea.objects.get(id=project_id, user=request.user)
+        project.delete()
+        return JsonResponse({'status': 'success'})
+    except AnalyzedArea.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Проєкт не знайдено'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)

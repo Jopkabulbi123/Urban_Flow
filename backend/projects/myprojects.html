@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanFlow – Мої проєкти</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="{% static 'css/pages/myprojects.css' %}">
+</head>
+<body>
+<nav>
+    <div class="logo"><a href="{% url 'logged_home' %}">
+        <img src="{% static 'img/cube.svg' %}" alt="Логотип UrbanFlow - куб">
+        <img src="{% static 'img/UrbanFlow.svg' %}" alt="UrbanFlow">
+    </a></div>
+    <ul role="list">
+        <li><a href="#">Про нас</a></li>
+        <li><a href="{% url 'profile' %}">Акаунт</a></li>
+    </ul>
+</nav>
+
+<div class="ellipse ellipse-1"></div>
+<div class="ellipse ellipse-2"></div>
+
+<div class="projects-container">
+    <div class="projects-header">
+        <h1>Мої проєкти</h1>
+    </div>
+
+    <p class="projects-description">Тут зберігаються всі ваші створені або оптимізовані плани. Ви можете переглядати, редагувати та керувати ними.</p>
+
+    {% if projects %}
+    <div class="projects-grid">
+        {% for project in projects %}
+        <div class="project-card" id="project-{{ project.id }}">
+            <h3>Проєкт #{{ project.id }}</h3>
+            <p class="project-meta">Створено: {{ project.created_at|date:"d.m.Y" }}</p>
+            <div class="project-stats">
+                <div class="stat">
+                    <span>Площа:</span>
+                    <strong>{{ project.area }} км²</strong>
+                </div>
+                <div class="stat">
+                    <span>Екологія:</span>
+                    <div class="mini-progress">
+                        <div style="width: {{ project.ecology }}%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="project-actions">
+                <a href="{% url 'project_detail' project.id %}" class="project-btn view-btn">Переглянути</a>
+                <button class="project-btn delete-btn" onclick="deleteProject({{ project.id }})">Видалити</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-projects">
+        <p>У вас ще немає збережених проектів</p>
+        <a href="{% url 'city_changer' %}" class="btn create-btn">Створити перший проєкт</a>
+    </div>
+    {% endif %}
+
+    <div class="actions-section">
+        <h2>Дії з проєктами</h2>
+        <ul class="actions-list">
+            <li>
+                <a href="{% url 'city_changer' %}" class="action-btn create-btn">Створити новий проєкт</a>
+                <span>– розпочати роботу над новим планом</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+function deleteProject(projectId) {
+    if (confirm('Ви впевнені, що хочете видалити цей проєкт? Цю дію неможливо скасувати.')) {
+        fetch(`/api/delete-project/${projectId}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Видаляємо картку проекту зі сторінки
+                const projectElement = document.getElementById(`project-${projectId}`);
+                if (projectElement) {
+                    projectElement.style.opacity = '0';
+                    setTimeout(() => {
+                        projectElement.remove();
+                        if (document.querySelectorAll('.project-card').length === 0) {
+                            location.reload();
+                        }
+                    }, 300);
+                }
+            } else {
+                alert('Помилка при видаленні проекту');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Сталася помилка при видаленні проекту');
+        });
+    }
+}
+</script>
+</body>
+</html>

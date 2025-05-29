@@ -1,0 +1,82 @@
+{% load static %}
+{% block content %}
+<div class="project-detail-container">
+    <h1>Проєкт #{{ project.id }}</h1>
+    <p class="project-meta">Створено: {{ project.created_at|date:"d.m.Y H:i" }}</p>
+    
+    <div class="project-stats">
+        <div class="stat-card">
+            <h3>Площа території</h3>
+            <p>{{ project.area }} км²</p>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Екологічність</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ project.ecology }}%"></div>
+                <span>{{ project.ecology }}/100</span>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Пішохідність</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ project.pedestrian_friendly }}%"></div>
+                <span>{{ project.pedestrian_friendly }}/100</span>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <h3>Завантаженість доріг</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ project.congestion }}%"></div>
+                <span>{{ project.congestion }}/100</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-sections">
+        <section class="hourly-congestion">
+            <h2>Завантаженість доріг по годинах</h2>
+            <div class="congestion-chart">
+                {% for hour in hourly_congestion %}
+                <div class="hour-bar">
+                    <div class="bar" style="height: {{ hour.congestion_level }}%"></div>
+                    <span>{{ hour.hour }}:00</span>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="road-stats">
+            <h2>Статистика доріг</h2>
+            <div class="road-types">
+                {% for stat in road_type_stats %}
+                <div class="road-type">
+                    <span class="type-name">{{ stat.road_type }}</span>
+                    <span class="type-count">{{ stat.count }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="green-spaces">
+            <h2>Зелені зони ({{ green_spaces|length }})</h2>
+            <ul>
+                {% for space in green_spaces %}
+                <li>{{ space.name }} ({{ space.space_type }})</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="water-features">
+            <h2>Водні об'єкти ({{ water_features|length }})</h2>
+            <ul>
+                {% for water in water_features %}
+                <li>{{ water.name }} ({{ water.feature_type }})</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+</div>
+{% endblock %}
