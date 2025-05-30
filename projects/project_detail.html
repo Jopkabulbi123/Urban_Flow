@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanFlow – Проєкт #{{ project.id }}</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="{% static 'css/pages/project_detail.css' %}">
+</head>
+<body>
+
+<nav>
+    <div class="logo"><a href="{% url 'logged_home' %}">
+        <img src="{% static 'img/cube.svg' %}" alt="Логотип UrbanFlow - куб">
+        <img src="{% static 'img/UrbanFlow.svg' %}" alt="UrbanFlow">
+    </a></div>
+    <ul role="list">
+        <li><a href="{% url 'about' %}">Про нас</a></li>
+        <li><a href="{% url 'profile' %}">Акаунт</a></li>
+        <li><a href="{% url 'myprojects' %}">Мої проєкти</a></li>
+    </ul>
+</nav>
+
+<div class="project-detail-container">
+    <h1>Проєкт #{{ project.id }}</h1>
+    <p class="project-meta">Створено: {{ project.created_at|date:"d.m.Y H:i" }} | Площа: {{ project.area }} км²</p>
+
+    <div class="project-stats">
+        <div class="stat-card">
+            <h3>Кількість доріг</h3>
+            <p>{{ project.road_count }}</p>
+        </div>
+
+        <div class="stat-card">
+            <h3>Екологічність</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ project.ecology }}%"></div>
+                <span>{{ project.ecology }}/100</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h3>Пішохідність</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ project.pedestrian_friendly }}%"></div>
+                <span>{{ project.pedestrian_friendly }}/100</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h3>Завантаженість доріг</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ project.congestion }}%"></div>
+                <span>{{ project.congestion }}/100</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <h3>Громадський транспорт</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ project.public_transport }}%"></div>
+                <span>{{ project.public_transport }}/100</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="project-sections">
+        <section class="hourly-congestion">
+            <h2>Завантаженість доріг по годинах</h2>
+            {% if hourly_congestion %}
+                <!-- Налагоджувальна інформація (можна видалити після фіксу) -->
+                <div class="debug-info" style="background: rgba(93, 104, 204, 0.1); padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.9rem;">
+                    <p>Кількість записів: {{ hourly_congestion|length }}</p>
+                    <p>Дані:
+                        {% for hour_data in hourly_congestion %}
+                            {{ hour_data.hour }}:{{ hour_data.congestion_level }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                </div>
+
+                <div class="congestion-chart">
+                    {% for hour_data in hourly_congestion %}
+                    <div class="hour-bar">
+                        <div class="bar"
+                             style="height: {% widthratio hour_data.congestion_level 100 180 %}px; min-height: 8px;"
+                             title="Година {{ hour_data.hour|stringformat:"02d" }}:00 - {{ hour_data.congestion_level }}%">
+                            <span class="bar-value">{{ hour_data.congestion_level }}%</span>
+                        </div>
+                        <span class="hour-label">{{ hour_data.hour|stringformat:"02d" }}:00</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Дані про завантаженість доріг відсутні</p>
+            {% endif %}
+        </section>
+
+        <section class="road-stats">
+            <h2>Статистика доріг</h2>
+            <div class="road-types">
+                {% for stat in road_type_stats %}
+                <div class="road-type">
+                    <span class="type-name">{{ stat.road_type }}</span>
+                    <span class="type-count">{{ stat.count }}</span>
+                </div>
+                {% empty %}
+                <p>Статистика доріг відсутня</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="green-spaces">
+            <h2>Зелені зони ({{ green_spaces|length }})</h2>
+            <ul>
+                {% for space in green_spaces %}
+                <li>{{ space.name }} ({{ space.space_type }})</li>
+                {% empty %}
+                <li>Зелені зони не знайдені</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section class="water-features">
+            <h2>Водні об'єкти ({{ water_features|length }})</h2>
+            <ul>
+                {% for water in water_features %}
+                <li>{{ water.name }} ({{ water.feature_type }})</li>
+                {% empty %}
+                <li>Водні об'єкти не знайдені</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+</div>
+
+</body>
+</html>

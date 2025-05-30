@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanFlow – Інструмент для трансформації міського простору</title>
+    <link rel="stylesheet" href="{% static 'css/pages/main.css' %}">
+</head>
+<body>
+<nav aria-label="Головна навігація">
+    <div class="logo">
+        <img src="{% static 'img/cube.svg' %}" alt="Логотип UrbanFlow - куб">
+        <img src="{% static 'img/UrbanFlow.svg' %}" alt="UrbanFlow">
+    </div>
+    <ul role="list">
+        <li><a href="{% url 'about' %}">Про нас</a></li>
+        <li><a href="{% url 'login' %}">Увійти</a></li>
+    </ul>
+</nav>
+
+<main>
+    <h1>Інструмент для трансформації міського простору</h1>
+    <p>Завантажте план вашої території, і ми покажемо, як вона може перетворитися на зручний, пішохідний простір із зеленими зонами та сучасною інфраструктурою</p>
+    <a href="{% url 'city_changer' %}" class="try-button">
+        <button type="button">Спробувати зараз</button>
+    </a>
+
+    <div class="background-elements">
+        <div class="ellipse ellipse-1"></div>
+        <div class="ellipse ellipse-2"></div>
+        <img src="{% static 'img/map.png' %}" class="map-img" alt="Фонова мапа" draggable="false">
+    </div>
+</main>
+</body>
+</html>

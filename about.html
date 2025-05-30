@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanFlow – Про інструмент</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="{% static 'css/pages/about.css' %}">
+</head>
+<body>
+<nav>
+    <div class="logo"><a href="{% url 'home' %}">
+        <img src="{% static 'img/cube.svg' %}" alt="Логотип UrbanFlow - куб">
+        <img src="{% static 'img/UrbanFlow.svg' %}" alt="UrbanFlow">
+    </a></div>
+</nav>
+
+<h1>Про інструмент</h1>
+
+<main class="about-container">
+
+    <p class="intro">Цей інструмент дозволяє створювати комфортні, екологічно чисті та функціональні міські простори.
+        Він пропонує сучасні рішення для планування інфраструктури з урахуванням ключових аспектів:</p>
+
+    <div class="features-wrapper">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-content">
+                    <h2>Екологічна стійкість</h2>
+                    <p>Пріоритет зелених зон та зменшення шкідливого впливу на довкілля.</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-content">
+                    <h2>Ефективність графіку</h2>
+                    <p>Розумне планування дорожньої мережі для зменшення заторів.</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-content">
+                    <h2>Бюджетна оптимізація</h2>
+                    <p>Пошук найкращих рішень з урахуванням фінансових обмежень.</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-content">
+                    <h2>Зручність для мешканців</h2>
+                    <p>Оптимізація простору для пішоходів, велосипедистів та громадського транспорту.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="call-to-action">
+        <p><strong>Разом ми можемо зробити міста кращими!</strong></p>
+    </div>
+</main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const featuresGrid = document.querySelector('.features-grid');
+        const cards = document.querySelectorAll('.feature-card');
+        const cardWidth = cards[0].offsetWidth + 20;
+        const totalWidth = cardWidth * cards.length;
+
+        featuresGrid.innerHTML += featuresGrid.innerHTML;
+
+        let position = 0;
+        const speed = 0.35;
+
+        function animate() {
+            position -= speed;
+            if (position <= -totalWidth) {
+                position = 0;
+            }
+            featuresGrid.style.transform = `translateX(${position}px)`;
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,234 @@
+
+@font-face {
+    font-family: 'e-Ukraine Bold';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-Bold.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Light';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-Light.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Ultralight';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-UltraLight.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'NAMU';
+    src: url('../../fonts/NAMU Old Style 1850/NAMU_TF_2022_v1804/OTF_PS/NAMU-1850.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    color: inherit;
+    font-family: 'e-Ukraine Ultralight', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    overflow-y: hidden;
+}
+
+body {
+    min-height: 100vh;
+    background: #171420;
+    color: #D9C6C6;
+    position: relative;
+    animation: fadeIn 1.5s ease-out;
+}
+
+h1, p, a, button {
+    color: #D9C6C6;
+}
+
+h1 {
+    font-family: "NAMU", serif;
+    font-weight: normal;
+    font-size: 3rem;
+    max-width: 800px;
+    margin: 3rem 0 2rem 1.3rem;
+    animation: slideInFromLeft 0.8s ease-out forwards;
+    animation-delay: 0.3s;
+    opacity: 0;
+}
+
+p {
+    font-weight: lighter;
+    font-size: 1.1rem;
+    max-width: 570px;
+    line-height: 1.4;
+    margin: 0 0 3rem 1.3rem;
+    animation: slideInFromLeft 0.8s ease-out forwards;
+    animation-delay: 0.5s;
+    opacity: 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem;
+    width: 100%;
+    z-index: 1;
+    background: transparent;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    animation: slideInFromLeft 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+.logo img {
+    margin-right: 6px;
+}
+
+div img[src="../img/cube.svg"] {
+    width: 7%;
+}
+
+div img[src="../img/UrbanFlow.svg"] {
+    width: 35%;
+}
+
+ul {
+    display: flex;
+    gap: 1.5rem;
+    margin: 0 1rem 0 0;
+}
+
+ul li a {
+    font-size: 0.9rem;
+    display: inline-block;
+    padding: 0.4rem 0.5rem;
+    transition: all 0.3s ease;
+}
+
+ul li a:hover {
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+main {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    padding: 2rem;
+    z-index: 0;
+}
+
+button {
+    font-family: "NAMU", serif;
+    background-color: #E3705E;
+    color: #171420;
+    border: none;
+    padding: 0.5rem 1.3rem 0.7rem 1.3rem;
+    font-size: 1.6rem;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 0 0 3rem 1.3rem;
+}
+
+button:hover {
+    background-color: #cc5d4b;
+    transform: scale(1.05);
+}
+
+.map-img {
+    position: absolute;
+    top: 50%;
+    right: -10%;
+    transform: translateY(-50%);
+    width: 60%;
+    max-width: 800px;
+    opacity: 0.1;
+    mix-blend-mode: lighten;
+    z-index: -1;
+    animation: mapFadeIn 2s ease-out;
+}
+
+.ellipse {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: -2;
+    opacity: 0.2;
+    animation: pulse 8s infinite ease-in-out;
+    pointer-events: none;
+}
+
+.ellipse-1 {
+    width: 700px;
+    height: 700px;
+    top: -250px;
+    left: -100px;
+    background: rgba(93, 104, 203, 0.2);
+}
+
+.ellipse-2 {
+    width: 900px;
+    height: 900px;
+    bottom: -300px;
+    right: -200px;
+    background: rgba(230, 126, 103, 0.2);
+    animation-delay: 0s;
+    animation: fadeInEllipse 1s ease-out forwards, pulse 8s infinite ease-in-out 1s;
+}
+
+ul li:last-child a {
+    background-color: #5D68CB;
+    padding: 0.5rem;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInEllipse {
+    from { opacity: 0; }
+    to { opacity: 0.2; }
+}
+
+@keyframes float {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    50% { transform: translateY(-55%) rotate(2deg); }
+    100% { transform: translateY(-50%) rotate(0deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.2; }
+    50% { transform: scale(1.05); opacity: 0.4; }
+}
+
+@keyframes mapFadeIn {
+    from { opacity: 0; transform: translateY(-50%) translateX(100px); }
+    to { opacity: 0.1; transform: translateY(-50%) translateX(0); }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

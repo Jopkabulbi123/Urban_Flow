@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanFlow – Аналіз міської території</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="{% static 'css/pages/city_changer.css' %}">
+</head>
+<body>
+
+<h1>Знайдіть потрібну для вас територію на мапі і отримайте аналіз.</h1>
+<section>
+    <h2>Мапа</h2>
+    <div id="map-container"></div>
+
+    <div class="coordinates-display">
+        <div>
+            <label>Пн-Зх: </label>
+            <span id="nw-coords">Не вибрано</span>
+        </div>
+        <div>
+            <label>Пд-Сх: </label>
+            <span id="se-coords">Не вибрано</span>
+        </div>
+    </div>
+
+    <button id="analyze-btn">Аналізувати</button>
+    <button id="save-btn" data-logged-in="{% if user.is_authenticated %}true{% else %}false{% endif %}">Зберегти</button>
+</section>
+
+<section class="optimization-results">
+    <h2>Результати аналізу</h2>
+    <div id="analysis-results">
+    </div>
+</section>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="{% static 'script/map.js' %}"></script>
+<script>
+    document.getElementById('save-btn').addEventListener('click', function() {
+        const isLoggedIn = this.getAttribute('data-logged-in') === 'true';
+
+        if (!isLoggedIn) {
+            window.location.href = "{% url 'login' %}";
+        } else {
+            const nwCoords = document.getElementById('nw-coords').textContent;
+            const seCoords = document.getElementById('se-coords').textContent;
+
+            if (nwCoords === 'Не вибрано' || seCoords === 'Не вибрано') {
+                alert('Будь ласка, виберіть територію для аналізу перед збереженням');
+                return;
+            }
+
+            fetch("{% url 'save_project' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    nw_coords: nwCoords,
+                    se_coords: seCoords,
+                    analysis_data: document.getElementById('analysis-results').innerHTML
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = "{% url 'myprojects' %}";
+                } else {
+                    alert('Помилка при збереженні проекту: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Сталася помилка при збереженні проекту');
+            });
+        }
+    });
+</script>
+</body>
+</html>

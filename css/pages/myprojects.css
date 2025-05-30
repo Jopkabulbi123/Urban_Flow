@@ -1,0 +1,331 @@
+@font-face {
+    font-family: 'e-Ukraine Bold';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-Bold.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Light';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-Light.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Ultralight';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-UltraLight.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'NAMU';
+    src: url('../../fonts/NAMU Old Style 1850/NAMU_TF_2022_v1804/OTF_PS/NAMU-1850.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    color: inherit;
+    font-family: 'e-Ukraine Ultralight', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: #171420;
+    color: #D9C6C6;
+    position: relative;
+    padding-top: 80px;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    margin: -77px 0 0 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: scale(1.2);
+}
+
+.logo img:first-child {
+    height: 30px;
+}
+
+.logo img:last-child {
+    height: 25px;
+}
+
+nav ul {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+}
+
+nav a {
+    color: #D9C6C6;
+    text-decoration: none;
+    font-family: 'e-Ukraine Light', sans-serif;
+    font-size: 16px;
+}
+
+.ellipse {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: 0;
+    opacity: 0.2;
+    animation: pulse 8s infinite ease-in-out;
+    pointer-events: none;
+}
+
+.ellipse-1 {
+    width: 700px;
+    height: 700px;
+    top: -250px;
+    left: -100px;
+    background: rgba(93, 104, 203, 0.2);
+}
+
+.ellipse-2 {
+    width: 900px;
+    height: 900px;
+    bottom: -300px;
+    right: -200px;
+    background: rgba(230, 126, 103, 0.2);
+    animation-delay: 1s;
+}
+
+.projects-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.projects-header {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 70px;
+}
+
+h1 {
+    font-family: "NAMU", serif;
+    font-size: 4.3rem;
+    color: #D9C6C6;
+}
+
+.projects-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    color: #D9C6C6;
+}
+
+.projects-section, .actions-section {
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-family: 'e-Ukraine Bold', sans-serif;
+    font-size: 2.4rem;
+    color: #D9C6C6;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.project-card {
+    background: #5D68CC;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+}
+
+.project-card h3 {
+    font-family: 'e-Ukraine Bold', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: #D9C6C6;
+}
+
+.project-update {
+    font-size: 0.9rem;
+    color: #D9C6C6;
+    margin-bottom: 15px;
+}
+
+.project-actions {
+    display: flex;
+    gap: 15px;
+}
+
+.project-btn {
+    background: #E66F5D;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'e-Ukraine Bold', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-btn {
+    background: #E66F5D;
+    color: #D9C6C6;
+}
+
+.delete-btn {
+    background: transparent;
+    color: #D9C6C6;
+    border: 2px solid #D9C6C6;
+}
+
+.project-btn:hover {
+    transform: scale(1.05);
+}
+
+.actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.actions-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.action-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'e-Ukraine Bold', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.create-btn {
+    background: #E66F5D;
+    color: #D9C6C6;
+}
+
+.search-btn {
+    background: #5D68CC;
+    color: #D9C6C6;
+}
+
+.action-btn:hover {
+    transform: scale(1.05);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.project-card {
+    background: rgba(93, 104, 204, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(93, 104, 204, 0.3);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    background: rgba(93, 104, 204, 0.3);
+}
+
+.project-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 15px 0;
+    flex-grow: 1;
+}
+
+.stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mini-progress {
+    width: 100px;
+    height: 6px;
+    background: rgba(217, 198, 198, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.mini-progress div {
+    height: 100%;
+    background: #5D68CC;
+    border-radius: 3px;
+}
+
+.project-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+.view-btn {
+    background: #E66F5D;
+    color: #D9C6C6;
+    flex: 1;
+    text-align: center;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'e-Ukraine Bold', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.delete-btn {
+    background: transparent;
+    color: #D9C6C6;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'e-Ukraine Bold', sans-serif;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(217, 198, 198, 0.3);
+}
+
+.view-btn:hover, .delete-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
