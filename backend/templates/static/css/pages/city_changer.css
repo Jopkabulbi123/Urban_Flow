@@ -442,10 +442,17 @@ button {
     cursor: pointer;
     font-weight: bolder;
     position: absolute;
-    right: 2rem;
     bottom: 2rem;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#analyze-btn {
+    right: 18rem;
+}
+
+#save-btn {
+    right: 2rem;
 }
 
 button:hover {

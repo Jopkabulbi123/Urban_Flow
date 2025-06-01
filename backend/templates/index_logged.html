@@ -15,7 +15,8 @@
     </div>
     <ul role="list">
         <li><a href="{% url 'about' %}">Про нас</a></li>
-        <li><a href="{% url 'login' %}">Увійти</a></li>
+        <li><a href="{% url 'myprojects' %}">Проєкти</a></li>
+        <li><a href="{% url 'profile' %}">Акаунт</a></li>
     </ul>
 </nav>
 
@@ -23,7 +24,7 @@
     <h1>Інструмент для трансформації міського простору</h1>
     <p>Завантажте план вашої території, і ми покажемо, як вона може перетворитися на зручний, пішохідний простір із зеленими зонами та сучасною інфраструктурою</p>
     <a href="{% url 'city_changer' %}" class="try-button">
-        <button type="button">Спробувати зараз</button>
+        <button type="button">Новий проєкт</button>
     </a>
 
     <div class="background-elements">

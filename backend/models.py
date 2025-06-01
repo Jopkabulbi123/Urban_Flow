@@ -78,7 +78,7 @@ class RoadTypeStats(models.Model):
 
 class HourlyCongestion(models.Model):
     area = models.ForeignKey(AnalyzedArea, on_delete=models.CASCADE, related_name='hourly_congestion')
-    hour = models.IntegerField()
+    hour = models.IntegerField()  # Година доби (0-23)
     congestion_level = models.IntegerField(help_text="Congestion level (0-100)")
 
     def __str__(self):

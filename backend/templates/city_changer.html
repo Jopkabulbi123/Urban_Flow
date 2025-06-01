@@ -9,17 +9,6 @@
     <link rel="stylesheet" href="{% static 'css/pages/city_changer.css' %}">
 </head>
 <body>
-<nav aria-label="Головна навігація">
-    <div class="logo">
-        <img src="{% static 'img/cube.svg' %}" alt="Логотип UrbanFlow - куб">
-        <img src="{% static 'img/UrbanFlow.svg' %}" alt="UrbanFlow">
-    </div>
-    <ul role="list">
-        <li><a href="#">Про нас</a></li>
-        <li><a href="#">Проєкти</a></li>
-        <li><a href="#">Увійти</a></li>
-    </ul>
-</nav>
 
 <h1>Знайдіть потрібну для вас територію на мапі і отримайте аналіз.</h1>
 <section>
@@ -38,6 +27,7 @@
     </div>
 
     <button id="analyze-btn">Аналізувати</button>
+    <button id="save-btn" data-logged-in="{% if user.is_authenticated %}true{% else %}false{% endif %}">Зберегти</button>
 </section>
 
 <section class="optimization-results">
@@ -48,5 +38,47 @@
 
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script src="{% static 'script/map.js' %}"></script>
+<script>
+    document.getElementById('save-btn').addEventListener('click', function() {
+        const isLoggedIn = this.getAttribute('data-logged-in') === 'true';
+
+        if (!isLoggedIn) {
+            window.location.href = "{% url 'login' %}";
+        } else {
+            const nwCoords = document.getElementById('nw-coords').textContent;
+            const seCoords = document.getElementById('se-coords').textContent;
+
+            if (nwCoords === 'Не вибрано' || seCoords === 'Не вибрано') {
+                alert('Будь ласка, виберіть територію для аналізу перед збереженням');
+                return;
+            }
+
+            fetch("{% url 'save_project' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    nw_coords: nwCoords,
+                    se_coords: seCoords,
+                    analysis_data: document.getElementById('analysis-results').innerHTML
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    window.location.href = "{% url 'myprojects' %}";
+                } else {
+                    alert('Помилка при збереженні проекту: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Сталася помилка при збереженні проекту');
+            });
+        }
+    });
+</script>
 </body>
 </html>

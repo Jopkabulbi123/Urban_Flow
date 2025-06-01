@@ -13,11 +13,11 @@ from backend.services.analysis import AreaAnalyzer
 from django.shortcuts import get_object_or_404
 
 
-
 @login_required
 def my_projects(request):
-    projects = request.user.analyzed_areas.all()
+    projects = request.user.analyzedarea_set.all()
     return render(request, 'projects/myprojects.html', {
+        'has_projects': projects.exists(),
         'projects': projects
     })
 
@@ -25,16 +25,24 @@ def my_projects(request):
 @login_required
 def project_detail(request, project_id):
     project = get_object_or_404(AnalyzedArea, id=project_id, user=request.user)
+
     hourly_congestion = project.hourly_congestion.all().order_by('hour')
 
-    return render(request, 'projects/project_detail.html', {
+    print(f"Project ID: {project.id}")
+    print(f"Hourly congestion count: {hourly_congestion.count()}")
+    for hc in hourly_congestion:
+        print(f"Hour {hc.hour}: {hc.congestion_level}%")
+
+    context = {
         'project': project,
         'hourly_congestion': hourly_congestion,
         'roads': project.roads.all(),
         'green_spaces': project.green_spaces.all(),
         'water_features': project.water_features.all(),
         'road_type_stats': project.road_type_stats.all()
-    })
+    }
+
+    return render(request, 'projects/project_detail.html', context)
 
 
 @csrf_exempt
@@ -120,6 +128,7 @@ def home_view(request):
         return redirect('logged_home')
     return render(request, 'index.html')
 
+
 @login_required
 def logged_home_view(request):
     projects_count = request.user.analyzedarea_set.count()
@@ -127,19 +136,12 @@ def logged_home_view(request):
         'projects_count': projects_count
     })
 
+
 def city_changer_view(request):
     return render(request, 'city_changer.html')
 
-@login_required
-def my_projects(request):
-    projects = request.user.analyzedarea_set.all()
-    return render(request, 'projects/myprojects.html', {
-        'has_projects': projects.exists(),
-        'projects': projects
-    })
-
-def logout_project(request):
-    return render(request, 'projects/logout_projects.html')
+def about_view(request):
+    return render(request, 'about.html')
 
 
 @login_required
@@ -175,14 +177,18 @@ def save_project(request):
                 count=count
             )
 
-        for hour, level in enumerate(analysis_results['hourly_congestion']):
+        hourly_congestion_data = analysis_results.get('hourly_congestion', [])
+        print(f"Saving hourly congestion data: {hourly_congestion_data}")
+
+        for hour, level in enumerate(hourly_congestion_data):
             HourlyCongestion.objects.create(
                 area=project,
                 hour=hour,
                 congestion_level=level
             )
+            print(f"Created HourlyCongestion: hour={hour}, level={level}")
 
-        for road in analysis_results['roads_data']:
+        for road in analysis_results.get('roads_data', []):
             Road.objects.create(
                 area=project,
                 osm_id=road['id'],
@@ -191,7 +197,7 @@ def save_project(request):
                 length=road['length']
             )
 
-        for space in analysis_results['green_spaces_data']:
+        for space in analysis_results.get('green_spaces_data', []):
             GreenSpace.objects.create(
                 area=project,
                 osm_id=space['id'],
@@ -199,7 +205,7 @@ def save_project(request):
                 space_type=space['type']
             )
 
-        for water in analysis_results['water_features_data']:
+        for water in analysis_results.get('water_features_data', []):
             WaterFeature.objects.create(
                 area=project,
                 osm_id=water['id'],
@@ -213,10 +219,12 @@ def save_project(request):
         })
 
     except Exception as e:
+        print(f"Error saving project: {str(e)}")
         return JsonResponse({
             'status': 'error',
             'message': str(e)
         }, status=400)
+
 
 @login_required
 @require_http_methods(["DELETE"])

@@ -1,7 +1,3 @@
-# ===============================
-# 1. services/area_analyzer.py (FIXED)
-# ===============================
-
 from collections import defaultdict
 from math import radians, cos, sin, asin, sqrt
 from .osm_data import OSMDataFetcher, haversine
@@ -25,6 +21,7 @@ class AreaAnalyzer:
 
         roads, road_count, road_types = self._extract_road_data(osm_data)
         green_spaces, water_features = self._extract_green_and_water_data(osm_data)
+        hourly_congestion = self._estimate_hourly_congestion(road_types)
 
         return {
             "bounds": [[north_bound, west_bound], [south_bound, east_bound]],
@@ -36,7 +33,10 @@ class AreaAnalyzer:
             "ecology": self._calculate_ecology_score(green_spaces, water_features, area_size),
             "pedestrian_friendly": self._calculate_pedestrian_score(roads, road_types),
             "public_transport": self._calculate_transport_score(osm_data),
-            "hourly_congestion": self._estimate_hourly_congestion(road_types)
+            "hourly_congestion": hourly_congestion,
+            "roads_data": roads,
+            "green_spaces_data": green_spaces,
+            "water_features_data": water_features
         }
 
     def _calculate_area_size(self, north: float, west: float, south: float, east: float) -> float:
@@ -165,24 +165,33 @@ class AreaAnalyzer:
         return self._calculate_score(road_types.get("Головні", 0), total_roads, 150)
 
     def _estimate_hourly_congestion(self, road_types: dict) -> list:
-        base_score = (road_types.get("Головні", 0) * 5 + road_types.get("Другорядні", 0) * 3)
-        total = max(sum(road_types.values()), 1)
-        base_level = min(40, int(base_score / total * 100))
+        main_road_weight = road_types.get("Головні", 0)
+        secondary_road_weight = road_types.get("Другорядні", 0)
+        local_roads = road_types.get("Місцеві", 0)
 
-        pattern = []
+        total_weight = max(sum(road_types.values()), 1)
+        base_level = int((main_road_weight * 6 + secondary_road_weight * 3 + local_roads) / total_weight * 20)
+
+        hourly_pattern = []
+
         for hour in range(24):
             if 7 <= hour <= 9:
-                factor = 1.5 + (hour - 7) * 0.5
+                factor = 1.8 if hour == 8 else 1.4
             elif 16 <= hour <= 19:
-                factor = 2.0 - abs(hour - 17.5) * 0.5
+                factor = 2.0 if hour == 17 else 1.5
             elif 10 <= hour <= 15:
-                factor = 1.3
-            elif 20 <= hour <= 23:
-                factor = max(0.5, 1.0 - (hour - 20) * 0.2)
+                factor = 1.2
+            elif 20 <= hour <= 22:
+                factor = 0.8
             else:
                 factor = 0.4
-            pattern.append(min(95, int(base_level * factor)))
-        return pattern
+
+            direction_bias = 1.1 if (hour in [8, 17]) else 1.0
+
+            hourly_congestion = min(95, int(base_level * factor * direction_bias))
+            hourly_pattern.append(hourly_congestion)
+
+        return hourly_pattern
 
     def _find_longest_road(self, roads: list) -> dict:
         if not roads:

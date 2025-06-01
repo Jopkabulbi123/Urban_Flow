@@ -1,0 +1,159 @@
+@font-face {
+    font-family: 'e-Ukraine Bold';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-Bold.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Light';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-Light.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'e-Ukraine Ultralight';
+    src: url('../../fonts/e-Ukraine/e-Ukraine-UltraLight.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'NAMU';
+    src: url('../../fonts/NAMU Old Style 1850/NAMU_TF_2022_v1804/OTF_PS/NAMU-1850.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: scale(1.2);
+}
+
+.logo img:first-child {
+    height: 30px;
+}
+
+.logo img:last-child {
+    height: 25px;
+}
+
+body {
+    min-height: 100vh;
+    background: #171420;
+    color: #D9C6C6;
+    position: relative;
+    animation: fadeIn 1.5s ease-out;
+    overflow: hidden;
+    width: 100%;
+}
+
+h1 {
+    font-family: 'e-Ukraine Bold';
+    font-size: 64px;
+    color: #D9C6C6;
+    margin: 0 40px 60px 40px;
+    text-align: right;
+}
+
+.about-container .intro {
+    font-family: 'e-Ukraine Ultralight';
+    font-size: 20px;
+    line-height: 1.6;
+    max-width: 1200px;
+    margin: 0 auto 50px;
+    text-align: center;
+}
+
+.features-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.features-grid {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    gap: 20px;
+}
+
+.feature-card {
+    flex: 0 0 320px;
+    height: 180px;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 98, 80, 0.1), rgba(255, 98, 80, 0.05));
+    border: 1px solid rgba(255, 98, 80, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 98, 80, 0.2);
+}
+
+
+.feature-card:hover img {
+    filter: brightness(0.4) blur(0px);
+}
+
+.feature-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 24px;
+    background: linear-gradient(
+        135deg,
+        rgba(23, 20, 32, 0.85) 0%,
+        rgba(23, 20, 32, 0.95) 50%,
+        rgba(0, 0, 0, 0.9) 100%
+    );
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: #D9C6C6;
+    font-family: 'e-Ukraine Light';
+}
+
+.feature-content h2 {
+    margin: 0 0 12px 0;
+    font-family: 'e-Ukraine Bold';
+    font-size: 22px;
+    color: #E3705E;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.feature-content p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #D9C6C6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.call-to-action p {
+    font-family: 'NAMU';
+    font-size: 30px;
+    color: #5D68CC;
+    font-weight: bold;
+    margin-top: 60px;
+    text-align: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
